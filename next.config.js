@@ -1,4 +1,4 @@
-/** @type {import('next').NextConfig} */
+// /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
@@ -8,3 +8,18 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
+// next.config.js
+
+module.exports = {
+    async rewrites() {
+      return [
+        {
+          source: '/api/booking',
+          destination: 'https://live.ipms247.com/booking/reservation_api/listing.php',
+        },        
+      ];
+    },
+  };
+
+    

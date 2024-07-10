@@ -6,6 +6,7 @@ interface Props {
     bgColor?: String
     fullWidth?: boolean
     IcAfter?: any
+    onClick?: () => void
 
 }
 
