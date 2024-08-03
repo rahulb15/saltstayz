@@ -6,7 +6,7 @@ export interface HotelState {
 }
 
 const initialState: HotelState = {
-    hotels: []
+    hotels: [],
 }
 export const hotelSlice = createSlice({
     name: 'hotels',

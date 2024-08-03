@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage'
 import authReducer from '../features/authSlice'
 import hotelReducer from '../features/hotelSlice'
 import appReducer from '../features/appSlice'
+import roomReducer from '../features/roomSlice'
 import {authApi, hotelApi, roomApi, uploadApi, userApi, bookingApi} from '../services'
 
 const persistConfig = {
@@ -24,7 +25,8 @@ const persistConfig = {
 const rootReducers = combineReducers({
     auth: authReducer,
     hotel: hotelReducer,
-    app: appReducer
+    app: appReducer,
+    room: roomReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducers)

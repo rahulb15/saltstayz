@@ -1,3 +1,255 @@
+// import React, { useState, useEffect } from "react";
+// import { useRouter } from "next/router";
+// import { MdLocationOn, AiFillHeart, AiOutlineHeart, BsFillShareFill } from "../../utils/icons";
+// import { Button, Modal } from "reactstrap";
+// import { toast } from "react-toastify";
+// import { HotelReview, ImageGallery } from "../../components/hotel";
+// import { Layout, Header } from "../../components/layout";
+// import StarRating from "../../components/core/StarRating";
+// import axios from "axios";
+// import { useAppSelector } from "../../store/hooks";
+// import Swal from "sweetalert2";
+
+// const HotelDetailPage = () => {
+//   const router = useRouter();
+//   const [hotelData, setHotelData] = useState<any>(null);
+//   const [showModal, setShowModal] = useState(false);
+//   const [isInWishList, setIsInWishList] = useState(false);
+//   const [checkIn, setCheckIn] = useState("");
+//   const [checkOut, setCheckOut] = useState("");
+//   const [adult, setAdult] = useState(1);
+//   const [children, setChildren] = useState(0);
+//   const [email, setEmail] = useState("");
+//   const [name, setName] = useState("");
+//   const [lastName, setLastName] = useState("");
+//   const [phone, setPhone] = useState("");
+
+//   const { bookings } = useAppSelector(
+//     (state: any) => state.persistedReducer.app
+//   );
+//   console.log(bookings);
+//   useEffect(() => {
+//     // Fetch hotel data here
+//     const fetchHotelData = async () => {
+//       // Replace this with actual API call
+//       const data:any = {
+//         Room_Name: "Daily Value Deal- Superior(W) - With Breakfast",
+//         Room_Description: "Deluxe Room (W) - With Breakfast<br><br>Size: 350 Sqft<br><br>Basic Amenities<br>AC and Smart TV | Complimentary Breakfast| Hot & Cold showers |Iron , Hair Dryer and Wardrobe| Laundry Service |Private Kitchen with Mini Bar| Tea/Coffee maker |Workstation",
+//         Roomtype_Name: "Deluxe Room",
+//         Room_Max_adult: "3",
+//         Room_Max_child: "2",
+//         Specials_Desc: "Best Price Guaranteed",
+//         specialhighlightinclusion: "Couple friendly, Local ID accepted Breakfast Included, Pay at the property",
+//         hotelcode: "35554",
+//         room_rates_info: {
+//           totalprice_inclusive_all: 1902.88,
+//         },
+//         RoomImages: [
+//           { image: "https://static.ipms247.com/uploads/35554_20240605052707_0011186001717565227_830_27.jpg" },
+//           { image: "https://static.ipms247.com/uploads/35554_20240605052708_0450821001717565228_852_28.jpg" },
+//           { image: "https://static.ipms247.com/uploads/35554_20240605052709_0418179001717565229_643_32.jpg" },
+//           { image: "https://static.ipms247.com/uploads/35554_20240605052710_0405799001717565230_76_34.jpg" },
+//           { image: "https://static.ipms247.com/uploads/35554_20240605052711_0516736001717565231_957_50.jpg" },
+//           { image: "https://static.ipms247.com/uploads/35554_20240605052712_0635850001717565232_391_56.jpg" },
+//         ],
+//       };
+//       setHotelData(data);
+//     };
+
+//     fetchHotelData();
+//   }, []);
+
+//   useEffect(() => {
+//     if (bookings && bookings[0]) {
+//       setCheckIn(bookings[0].checkIn);
+//       setCheckOut(bookings[0].checkOut);
+//       setAdult(bookings[0].adult);
+//       setChildren(bookings[0].children);
+//     }
+//   }, [bookings]);
+
+//   const wishListHandle = () => {
+//     setIsInWishList(!isInWishList);
+//     toast.success(isInWishList ? "Deleted from wishlist" : "Saved to wishlist");
+//   };
+
+//   const handleBookNow = async () => {
+//     try {
+//       const { value: formValues } = await Swal.fire({
+//         title: "Enter your contact details",
+//         html:
+//           '<input id="swal-input1" class="swal2-input" placeholder="First Name">' +
+//           '<input id="swal-input2" class="swal2-input" placeholder="Last Name">' +
+//           '<input id="swal-input3" class="swal2-input" placeholder="Email">' +
+//           '<input id="swal-input4" class="swal2-input" placeholder="Phone">',
+//         focusConfirm: false,
+//         preConfirm: () => {
+
+//         }
+//       });
+
+//       if (formValues) {
+//         const [firstName, lastName, email, phone] = formValues;
+//         setName(firstName);
+//         setLastName(lastName);
+//         setEmail(email);
+//         setPhone(phone);
+
+//         // Call your booking API here
+//         // For now, we'll just show a success message
+//         Swal.fire(
+//           'Booking Successful!',
+//           'Your booking has been confirmed.',
+//           'success'
+//         );
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       Swal.fire(
+//         'Error',
+//         'There was an error processing your booking.',
+//         'error'
+//       );
+//     }
+//   };
+
+//   if (!hotelData) return <div>Loading...</div>;
+
+//   return (
+//     <>
+//       <Header />
+//       <Layout
+//         metadata={{
+//           title: `${hotelData.Room_Name} - Booking`,
+//           description: hotelData.Room_Description,
+//         }}
+//       >
+//         <div className="container mx-auto px-4 py-8">
+//           <div className="mb-8">
+//             <h1 className="text-4xl font-bold mb-2">{hotelData.Room_Name}</h1>
+//             <div className="flex items-center gap-4 mb-4">
+//               <p className="bg-gray-100 text-gray-800 px-2 py-1 rounded">
+//                 {hotelData.Roomtype_Name}
+//               </p>
+//               <StarRating data={4} /> {/* Assuming 4-star rating */}
+//               <div className="bg-blue-600 text-white px-2 py-1 rounded">
+//                 {hotelData.Specials_Desc}
+//               </div>
+//             </div>
+//           </div>
+
+//           <ImageGallery photos={hotelData?.RoomImages.map((img:any) => img.image)} />
+
+//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+//             <div className="lg:col-span-2">
+//               <h2 className="text-2xl font-semibold mb-4">About this room</h2>
+//               <div
+//                 className="text-gray-700 mb-6"
+//                 dangerouslySetInnerHTML={{ __html: hotelData.Room_Description }}
+//               />
+
+//               <h3 className="text-xl font-semibold mb-4">Room Highlights</h3>
+//               <div className="grid grid-cols-2 gap-4">
+//                 {hotelData.specialhighlightinclusion.split(', ').map((highlight:any, index:any) => (
+//                   <div key={index} className="flex items-center">
+//                     <span className="text-green-500 mr-2">✓</span>
+//                     <span>{highlight}</span>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               <h3 className="text-xl font-semibold mt-8 mb-4">Room Capacity</h3>
+//               <div className="flex gap-4">
+//                 <div className="border rounded-lg p-4">
+//                   <h4 className="font-semibold">Max Adults</h4>
+//                   <p>{hotelData.Room_Max_adult}</p>
+//                 </div>
+//                 <div className="border rounded-lg p-4">
+//                   <h4 className="font-semibold">Max Children</h4>
+//                   <p>{hotelData.Room_Max_child}</p>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <div className="lg:col-span-1">
+//               <div className="bg-gray-100 p-6 rounded-lg sticky top-8">
+//                 <h3 className="text-xl font-semibold mb-4">Book Your Stay</h3>
+//                 <div className="mb-4">
+//                   <label className="block mb-2">Check-in</label>
+//                   <input
+//                     type="date"
+//                     value={checkIn}
+//                     onChange={(e) => setCheckIn(e.target.value)}
+//                     className="w-full p-2 border rounded"
+//                   />
+//                 </div>
+//                 <div className="mb-4">
+//                   <label className="block mb-2">Check-out</label>
+//                   <input
+//                     type="date"
+//                     value={checkOut}
+//                     onChange={(e) => setCheckOut(e.target.value)}
+//                     className="w-full p-2 border rounded"
+//                   />
+//                 </div>
+//                 <div className="mb-4">
+//                   <label className="block mb-2">Adults</label>
+//                   <input
+//                     type="number"
+//                     value={adult}
+//                     onChange={(e) => setAdult(Number(e.target.value))}
+//                     min="1"
+//                     max={hotelData.Room_Max_adult}
+//                     className="w-full p-2 border rounded"
+//                   />
+//                 </div>
+//                 <div className="mb-4">
+//                   <label className="block mb-2">Children</label>
+//                   <input
+//                     type="number"
+//                     value={children}
+//                     onChange={(e) => setChildren(Number(e.target.value))}
+//                     min="0"
+//                     max={hotelData.Room_Max_child}
+//                     className="w-full p-2 border rounded"
+//                   />
+//                 </div>
+//                 <div className="text-2xl font-bold mb-4">
+//                   ₹{hotelData.room_rates_info.totalprice_inclusive_all} / night
+//                 </div>
+//                 <Button
+//                   color="danger"
+//                   block
+//                   size="lg"
+//                   onClick={handleBookNow}
+//                   className="mt-4"
+//                 >
+//                   Book Now
+//                 </Button>
+//                 <div className="flex justify-between items-center mt-4">
+//                   <button
+//                     onClick={wishListHandle}
+//                     className="flex items-center text-gray-600 hover:text-red-500"
+//                   >
+//                     {isInWishList ? <AiFillHeart /> : <AiOutlineHeart />}
+//                     <span className="ml-2">Save to wishlist</span>
+//                   </button>
+//                   <button className="flex items-center text-gray-600 hover:text-blue-500">
+//                     <BsFillShareFill />
+//                     <span className="ml-2">Share</span>
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </Layout>
+//     </>
+//   );
+// };
+
+// export default HotelDetailPage;
+
 import React, { Fragment, use, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
@@ -37,7 +289,9 @@ import { Header } from "../../components/layout";
 import { icons } from "react-icons";
 import { useAppSelector } from "../../store/hooks";
 import moment from "moment";
-
+import Image from "next/image";
+// Custom loader function
+const customLoader = ({ src }: any) => src;
 const hotel = {
   _id: "1",
   name: "Hotel 1",
@@ -150,7 +404,7 @@ const HotelDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showShare, setShowShare] = useState(false);
-  const [selectedRoomType, setSelectedRoomType] = useState(null);
+  const [selectedRoomType, setSelectedRoomType] = useState<any>(null);
   const [guests, setGuests] = useState("1 adult");
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
   const [checkIn, setCheckIn] = useState("");
@@ -165,6 +419,321 @@ const HotelDetailPage = () => {
     (state: any) => state.persistedReducer.app
   );
   console.log(bookings);
+  const { rooms } = useAppSelector((state: any) => state.persistedReducer.room);
+  console.log("rooms", rooms);
+
+  console.log("selectedRoomType", selectedRoomType);
+
+  // const roomData = [
+  //   {
+  //     Room_Name: "Monsoon Sale - Deluxe Room (W) - With Breakfast",
+  //     Room_Description:
+  //       "Deluxe Room (W) - With Breakfast<br><br>Size: 350 Sqft<br><br>Basic Amenities<br>AC and Smart TV | Complimentary Breakfast| Hot & Cold showers |Iron , Hair Dryer and Wardrobe| Laundry Service |Private Kitchen with Mini Bar| Tea/Coffee maker |Workstation",
+  //     Roomtype_Name: "Deluxe Room",
+  //     Roomtype_Short_code: "Deluxe Room",
+  //     Room_Max_adult: "3",
+  //     Room_Max_child: "2",
+  //     Package_Description: "",
+  //     Specials_Desc: "Monsoon Sale | lowest price guaranteed",
+  //     specialconditions:
+  //       "<b>Not Applicable for Group Bookings|</b> : This price is only applicable for Individual & Family Travelers. Bulk Booking for more than 5 rooms will have separate price (Including Multiplies booking by single user or social event booking).<br>",
+  //     specialhighlightinclusion:
+  //       "Couple friendly, Local ID accepted Breakfast Included, Pay at the property",
+  //     hotelcode: "35554",
+  //     roomtypeunkid: "3555400000000000003",
+  //     ratetypeunkid: "3555400000000000007",
+  //     roomrateunkid: "3555400000000000017",
+  //     base_adult_occupancy: 2,
+  //     base_child_occupancy: 0,
+  //     max_adult_occupancy: 3,
+  //     max_child_occupancy: 2,
+  //     max_occupancy: "",
+  //     inclusion: "",
+  //     available_rooms: { "2024-07-15": 24 },
+  //     min_ava_rooms: 24,
+  //     room_rates_info: {
+  //       before_discount_inclusive_tax_adjustment: { "2024-07-15": 0 },
+  //       exclusive_tax: { "2024-07-15": 1848 },
+  //       exclusivetax_baserate: { "2024-07-15": 1848 },
+  //       tax: { "2024-07-15": 221.76 },
+  //       adjustment: { "2024-07-15": 0 },
+  //       inclusive_tax_adjustment: { "2024-07-15": 2069.76 },
+  //       rack_rate: "50300.0000",
+  //       totalprice_room_only: 1848,
+  //       totalprice_inclusive_all: 2069.76,
+  //       avg_per_night_before_discount: 0,
+  //       avg_per_night_after_discount: 2069.76,
+  //       avg_per_night_without_tax: 1848,
+  //       day_wise_baserackrate: [1848],
+  //       day_wise_beforediscount: ["4200.0000"],
+  //     },
+  //     extra_adult_rates_info: {
+  //       exclusive_tax: { "2024-07-15": "900.0000" },
+  //       tax: { "2024-07-15": 108 },
+  //       adjustment: { "2024-07-15": 0 },
+  //       inclusive_tax_adjustment: { "2024-07-15": 1008 },
+  //       rack_rate: "450.0000",
+  //     },
+  //     extra_child_rates_info: {
+  //       exclusive_tax: { "2024-07-15": "900.0000" },
+  //       tax: { "2024-07-15": 108 },
+  //       adjustment: { "2024-07-15": 0 },
+  //       inclusive_tax_adjustment: { "2024-07-15": 1008 },
+  //       rack_rate: "450.0000",
+  //     },
+  //     min_nights: { "2024-07-15": "1" },
+  //     stopsells: { "2024-07-15": "0" },
+  //     close_on_arrival: { "2024-07-15": "0" },
+  //     close_on_dept: { "2024-07-15": "0" },
+  //     Hotel_amenities: "[]",
+  //     Hotel_amenitiesNew: [],
+  //     Avg_min_nights: "1",
+  //     max_nights: [],
+  //     check_in_time: "13:00",
+  //     check_out_time: "11:00",
+  //     TaxName: {
+  //       "2024-07-15": {
+  //         Taxname_0: "CGST",
+  //         taxdate_0: "2022-09-07 15:46:49",
+  //         exemptafter_0: "0",
+  //         postingtype_0: "SLAB",
+  //         postingrule_0: "",
+  //         amount_0: "0.0000",
+  //         slab_0: "0.00-7500.00-6,7500.01-100000.00-9",
+  //         discounttype_0: "AFTERDISCOUNT",
+  //         entrydatetime_0: "2022-09-07 10:16:49",
+  //         taxapplyafter_0: "",
+  //         applyonrackrate_0: "0",
+  //         applytaxdate_0: "2022-09-07",
+  //         exchange_rate1_0: "1.0000",
+  //         exchange_rate2_0: "1.0000",
+  //         Taxname_1: "SGST",
+  //         taxdate_1: "2022-09-07 15:47:19",
+  //         exemptafter_1: "0",
+  //         postingtype_1: "SLAB",
+  //         postingrule_1: "",
+  //         amount_1: "0.0000",
+  //         slab_1: "0.00-7500.00-6,7500.01-100000.00-9",
+  //         discounttype_1: "AFTERDISCOUNT",
+  //         entrydatetime_1: "2022-09-07 10:17:19",
+  //         taxapplyafter_1: "",
+  //         applyonrackrate_1: "0",
+  //         applytaxdate_1: "2022-09-07",
+  //         exchange_rate1_1: "1.0000",
+  //         exchange_rate2_1: "1.0000",
+  //       },
+  //     },
+  //     ShowPriceFormat: "Average Per Night Rate",
+  //     DefaultDisplyCurrencyCode: "",
+  //     deals: "Sp:PERCENTDISCOUNT|56|Per",
+  //     IsPromotion: false,
+  //     Promotion_Code: null,
+  //     Promotion_Description: null,
+  //     Promotion_Name: null,
+  //     Promotion_Id: null,
+  //     Package_Name: "Monsoon Sale - Deluxe Room (W) - With Breakfast",
+  //     Package_Id: "3555400000000000055",
+  //     currency_code: "INR",
+  //     currency_sign: "Rs",
+  //     localfolder: "saltstayzsector46",
+  //     CalDateFormat: "dd-mm-yy",
+  //     ShowTaxInclusiveExclusiveSettings: "0",
+  //     hidefrommetasearch: "",
+  //     prepaid_noncancel_nonrefundable: "0",
+  //     cancellation_deadline: "",
+  //     digits_after_decimal: "2",
+  //     visiblity_nights: "false",
+  //     BookingEngineURL:
+  //       "https://live.ipms247.com/booking/book-rooms-saltstayzsector46",
+  //     NewRoomAmenities: [],
+  //     RoomAmenities: "",
+  //     room_main_image:
+  //       "https://static.ipms247.com/uploads/35554_20240605052707_0011186001717565227_830_27.jpg",
+  //     RoomImages:
+  //       Array(6)[
+  //         ({
+  //           room_main_image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052707_0011186001717565227_830_27.jpg",
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052707_0011186001717565227_830_27.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052708_0450821001717565228_852_28.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052709_0418179001717565229_643_32.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052710_0405799001717565230_76_34.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052711_0516736001717565231_957_50.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052712_0635850001717565232_391_56.jpg",
+  //         })
+  //       ],
+  //   },
+  //   {
+  //     Room_Name: "Monsoon Sale - Superior Room (W)-With Breakfast",
+  //     Room_Description:
+  //       "Superior Room (W)-With Breakfast<br><br>Size: 350 Sqft<br><br>Basic Amenities<br>AC and Smart TV | Complimentary Breakfast| Hot & Cold showers |Iron , Hair Dryer and Wardrobe| Laundry Service | Tea/Coffee maker |Workstation| Private Kitchen with Mini Bar",
+  //     Roomtype_Name: "Superior Room",
+  //     Roomtype_Short_code: "Superior Room",
+  //     Room_Max_adult: "3",
+  //     Room_Max_child: "2",
+  //     Package_Description: "",
+  //     Specials_Desc: "Monsoon Sale | lowest price guaranteed",
+  //     specialconditions:
+  //       "<b>Not Applicable for Group Bookings|</b> : This price is only applicable for Individual & Family Travelers. Bulk Booking for more than 5 rooms will have separate price (Including Multiplies booking by single user or social event booking).<br>",
+  //     specialhighlightinclusion:
+  //       "Couple friendly, Local ID accepted Breakfast Included, Pay at the property",
+  //     hotelcode: "35554",
+  //     roomtypeunkid: "3555400000000000004",
+  //     ratetypeunkid: "3555400000000000007",
+  //     roomrateunkid: "3555400000000000014",
+  //     base_adult_occupancy: 2,
+  //     base_child_occupancy: 0,
+  //     max_adult_occupancy: 2,
+  //     max_child_occupancy: 2,
+  //     max_occupancy: "",
+  //     inclusion: "",
+  //     available_rooms: { "2024-07-15": 8 },
+  //     min_ava_rooms: 8,
+  //     room_rates_info: {
+  //       before_discount_inclusive_tax_adjustment: { "2024-07-15": 0 },
+  //       exclusive_tax: { "2024-07-15": 1716 },
+  //       exclusivetax_baserate: { "2024-07-15": 1716 },
+  //       tax: { "2024-07-15": 205.92 },
+  //       adjustment: { "2024-07-15": 0 },
+  //       inclusive_tax_adjustment: { "2024-07-15": 1921.92 },
+  //       rack_rate: "50000.0000",
+  //       totalprice_room_only: 1716,
+  //       totalprice_inclusive_all: 1921.92,
+  //       avg_per_night_before_discount: 0,
+  //       avg_per_night_after_discount: 1921.92,
+  //       avg_per_night_without_tax: 1716,
+  //       day_wise_baserackrate: [1716],
+  //       day_wise_beforediscount: ["3900.0000"],
+  //     },
+  //     extra_adult_rates_info: {
+  //       exclusive_tax: { "2024-07-15": "900.0000" },
+  //       tax: { "2024-07-15": 108 },
+  //       adjustment: { "2024-07-15": 0 },
+  //       inclusive_tax_adjustment: { "2024-07-15": 1008 },
+  //       rack_rate: "450.0000",
+  //     },
+  //     extra_child_rates_info: {
+  //       exclusive_tax: { "2024-07-15": "900.0000" },
+  //       tax: { "2024-07-15": 108 },
+  //       adjustment: { "2024-07-15": 0 },
+  //       inclusive_tax_adjustment: { "2024-07-15": 1008 },
+  //       rack_rate: "450.0000",
+  //     },
+  //     min_nights: { "2024-07-15": "1" },
+  //     stopsells: { "2024-07-15": "0" },
+  //     close_on_arrival: { "2024-07-15": "0" },
+  //     close_on_dept: { "2024-07-15": "0" },
+  //     Hotel_amenities: "[]",
+  //     Hotel_amenitiesNew: [],
+  //     Avg_min_nights: "1",
+  //     max_nights: [],
+  //     check_in_time: "13:00",
+  //     check_out_time: "11:00",
+  //     TaxName: {
+  //       "2024-07-15": {
+  //         Taxname_0: "CGST",
+  //         taxdate_0: "2022-09-07 15:46:49",
+  //         exemptafter_0: "0",
+  //         postingtype_0: "SLAB",
+  //         postingrule_0: "",
+  //         amount_0: "0.0000",
+  //         slab_0: "0.00-7500.00-6,7500.01-100000.00-9",
+  //         discounttype_0: "AFTERDISCOUNT",
+  //         entrydatetime_0: "2022-09-07 10:16:49",
+  //         taxapplyafter_0: "",
+  //         applyonrackrate_0: "0",
+  //         applytaxdate_0: "2022-09-07",
+  //         exchange_rate1_0: "1.0000",
+  //         exchange_rate2_0: "1.0000",
+  //         Taxname_1: "SGST",
+  //         taxdate_1: "2022-09-07 15:47:19",
+  //         exemptafter_1: "0",
+  //         postingtype_1: "SLAB",
+  //         postingrule_1: "",
+  //         amount_1: "0.0000",
+  //         slab_1: "0.00-7500.00-6,7500.01-100000.00-9",
+  //         discounttype_1: "AFTERDISCOUNT",
+  //         entrydatetime_1: "2022-09-07 10:17:19",
+  //         taxapplyafter_1: "",
+  //         applyonrackrate_1: "0",
+  //         applytaxdate_1: "2022-09-07",
+  //         exchange_rate1_1: "1.0000",
+  //         exchange_rate2_1: "1.0000",
+  //       },
+  //     },
+  //     ShowPriceFormat: "Average Per Night Rate",
+  //     DefaultDisplyCurrencyCode: "",
+  //     deals: "Sp:PERCENTDISCOUNT|56|Per",
+  //     IsPromotion: false,
+  //     Promotion_Code: null,
+  //     Promotion_Description: null,
+  //     Promotion_Name: null,
+  //     Promotion_Id: null,
+  //     Package_Name: "Monsoon Sale - Superior Room (W)-With Breakfast",
+  //     Package_Id: "3555400000000000054",
+  //     currency_code: "INR",
+  //     currency_sign: "Rs",
+  //     localfolder: "saltstayzsector46",
+  //     CalDateFormat: "dd-mm-yy",
+  //     ShowTaxInclusiveExclusiveSettings: "0",
+  //     hidefrommetasearch: "",
+  //     prepaid_noncancel_nonrefundable: "0",
+  //     cancellation_deadline: "",
+  //     digits_after_decimal: "2",
+  //     visiblity_nights: "false",
+  //     BookingEngineURL:
+  //       "https://live.ipms247.com/booking/book-rooms-saltstayzsector46",
+  //     NewRoomAmenities: [],
+  //     RoomAmenities: "",
+  //     room_main_image:
+  //       "https://static.ipms247.com/uploads/35554_20240605052403_0137310001717565043_473_34.jpg",
+  //     RoomImages:
+  //       Array(6)[
+  //         ({
+  //           room_main_image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052403_0137310001717565043_473_34.jpg",
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052403_0137310001717565043_473_34.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052404_0440925001717565044_778_41.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052405_0493343001717565045_758_42.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052406_0509179001717565046_333_54.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052407_0755868001717565047_96_56.jpg",
+  //         },
+  //         {
+  //           image:
+  //             "https://static.ipms247.com/uploads/35554_20240605052807_0029511001717565287_355_12.jpg",
+  //         })
+  //       ],
+  //   },
+  // ];
 
   useEffect(() => {
     setCheckIn(bookings[0]?.checkIn);
@@ -201,8 +770,11 @@ const HotelDetailPage = () => {
         toast.success("Deleted from wishlist");
       }
     };
+    
+    // handleChangeBooking(firstName, lastName, email, phone);
 
-    const handleChangeBooking = async () => {
+
+    const handleChangeBooking = async (firstName:any, lastName:any, email:any, phone:any) => {
       try {
         const queryParams = new URLSearchParams({
           request_type: "InsertBooking",
@@ -223,7 +795,7 @@ const HotelDetailPage = () => {
               number_children: children.toString(),
               ExtraChild_Age: "2",
               Title: "",
-              First_Name: name,
+              First_Name: firstName,
               Last_Name: lastName,
               Gender: "",
               SpecialRequest: "",
@@ -395,12 +967,15 @@ const HotelDetailPage = () => {
           showLoaderOnConfirm: true,
           preConfirm: () => {
             const firstName = (
-              document.getElementById("swal-input-first-name") as HTMLInputElement
+              document.getElementById(
+                "swal-input-first-name"
+              ) as HTMLInputElement
             ).value;
             const lastName = (
-              document.getElementById("swal-input-last-name") as HTMLInputElement
+              document.getElementById(
+                "swal-input-last-name"
+              ) as HTMLInputElement
             ).value;
-
 
             const email = (
               document.getElementById("swal-input-email") as HTMLInputElement
@@ -413,10 +988,6 @@ const HotelDetailPage = () => {
               Swal.showValidationMessage("You need to fill out both fields!");
             }
 
-
-
-
-
             const emailPattern =
               /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             if (!emailPattern.test(email)) {
@@ -428,7 +999,12 @@ const HotelDetailPage = () => {
               Swal.showValidationMessage("Please enter a valid phone number");
             }
 
-            return { email: email, phone: phone, firstName: firstName, lastName: lastName };
+            return {
+              email: email,
+              phone: phone,
+              firstName: firstName,
+              lastName: lastName,
+            };
           },
           allowOutsideClick: () => !Swal.isLoading(),
           confirmButtonColor: "#3085d6",
@@ -440,11 +1016,11 @@ const HotelDetailPage = () => {
             console.log("Phone:", phone);
             console.log("First Name:", result.value.firstName);
             console.log("Last Name:", result.value.lastName);
-            setPhone(phone);
-            setEmail(email);
-            setName(result.value.firstName);
-            setLastName(result.value.lastName);
-            handleChangeBooking();
+            // setPhone(phone);
+            // setEmail(email);
+            // setName(result.value.firstName);
+            // setLastName(result.value.lastName);
+            handleChangeBooking(result.value.firstName, result.value.lastName, email, phone);
 
             // Swal.fire({
             //   title: "Booking successful",
@@ -502,7 +1078,24 @@ const HotelDetailPage = () => {
               </div>
             </div>
 
-            <ImageGallery photos={hotel.photos} />
+            {/* <ImageGallery photos={hotel.photos} /> */}
+            {selectedRoomType ? (
+              <>
+              {selectedRoomType?.RoomImages?.length > 0 ? (
+                <ImageGallery
+                  photos={selectedRoomType?.RoomImages?.map(
+                    (image: any) => image.image
+                  )}
+                />
+              ) : (
+                <ImageGallery photos={[selectedRoomType?.room_main_image]} />
+              )}
+              </>
+            ) : (
+              <ImageGallery photos={hotel.photos} />
+            )}
+            
+
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
               <div className="lg:col-span-2">
@@ -519,11 +1112,22 @@ const HotelDetailPage = () => {
                   }
                 </p>
 
+                <h3 className="text-xl font-semibold mb-4">Room Highlights</h3>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {hotel.descShort.split(", ").map((highlight, index) => (
+                    <div key={index} className="flex items-center">
+                      <span className="text-green-500 mr-2">✓</span>
+                      <span>{highlight}</span>
+                    </div>
+                  ))}
+                </div>
+
                 <h3 className="text-xl font-semibold mb-4">
                   Popular amenities
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {[
+                  {/* {[
                     { icon: <AiOutlineWifi />, label: "Free WiFi" },
                     { icon: <FaParking />, label: "Free parking" },
                     { icon: <MdFamilyRestroom />, label: "Family rooms" },
@@ -541,12 +1145,34 @@ const HotelDetailPage = () => {
                       </span>
                       <span>{amenity.label}</span>
                     </div>
+                  ))} */}
+
+                  {/* {selectedRoomType?.NewRoomAmenities.map((amenity:any, index:any) => (
+                    <div key={index} className="flex items-center">
+                      <span className="text-green-500 mr-2">✓</span>
+                      <span>{amenity}</span>
+                    </div>
+                  ))} */}
+
+{/* Room_Description */}
+
+                  {selectedRoomType?.Room_Description.split("| ").map((amenity:any, index:any) => (
+                    <div key={index} className="flex items-center">
+                      <span className="text-green-500 mr-2">✓</span>
+                      <span>{amenity}</span>
+                    </div>
                   ))}
+
+
+
+
+
+
                 </div>
 
-                <h3 className="text-xl font-semibold mt-8 mb-4">Room Types</h3>
+                <h3 className="text-xl font-semibold mt-8 mb-4">Choose your room</h3>
                 <div className="space-y-4">
-                  {hotel.roomTypes.map((room: any) => (
+                  {/* {hotel.roomTypes.map((room: any) => (
                     <div
                       key={room.id}
                       className="border rounded-lg p-4 hover:shadow-md transition-shadow"
@@ -565,11 +1191,78 @@ const HotelDetailPage = () => {
                         </Button>
                       </div>
                     </div>
+                  ))} */}
+
+                  {/* {roomData.map((room: any) => (
+                    <div
+                      key={room.Roomtype_Id}
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+                    >
+                      <h4 className="font-semibold mb-2">{room.Room_Name}</h4>
+                      <p
+                        className="text-gray-600 mb-2"
+                        dangerouslySetInnerHTML={{
+                          __html: room.Room_Description,
+                        }}
+                      ></p>
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-lg">
+                          ₹{room.room_rates_info.totalprice_inclusive_all} / night
+                        </span>
+                        <Button
+                          color="primary"
+                          onClick={() => setSelectedRoomType(room)}
+                        >
+                          Select
+                        </Button>
+                      </div>
+                    </div>
+                  ))} */}
+
+                  {rooms?.map((room: any) => (
+                    <div
+                      key={room.Roomtype_Id}
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+                    >
+                      <h4 className="font-semibold mb-2">{room.Room_Name}</h4>
+                      <div className="flex justify-between items-center">
+                        <p
+                          className="text-gray-600 mb-2"
+                          dangerouslySetInnerHTML={{
+                            __html: room.Room_Description,
+                          }}
+                        ></p>
+
+                        <Image
+                          loader={customLoader}
+                          src={room.room_main_image}
+                          alt={room.Room_Name}
+                          width={250}
+                          height={250}
+                        />
+                      </div>
+
+                      <div className="flex justify-between items-center mt-8">
+                        <span className="font-bold text-lg">
+                          ₹{room?.room_rates_info?.totalprice_inclusive_all} /
+                          night
+                        </span>
+                        <button
+                          color="primary"
+                          onClick={() => setSelectedRoomType(room)}
+                          className={`px-4 py-2 text-white rounded-lg font-semibold ${ selectedRoomType?.Room_Name === room.Room_Name ? "bg-green-600" : "bg-blue-500"}`}
+                        >
+                          {selectedRoomType?.Room_Name === room.Room_Name
+                            ? "Selected"
+                            : "Select"}
+                        </button>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
 
-              <div className="lg:col-span-1">
+              {/* <div className="lg:col-span-1">
                 <div className="bg-gray-100 p-6 rounded-lg sticky top-8">
                   <h3 className="text-xl font-semibold mb-4">
                     Price for your dates
@@ -620,6 +1313,87 @@ const HotelDetailPage = () => {
                   >
                     Book Now
                   </Button>
+                  <div className="flex justify-between items-center mt-4">
+                    <button
+                      onClick={wishListHandle}
+                      className="flex items-center text-gray-600 hover:text-red-500"
+                    >
+                      {isInWishList ? <AiFillHeart /> : <AiOutlineHeart />}
+                      <span className="ml-2">Save to wishlist</span>
+                    </button>
+                    <button className="flex items-center text-gray-600 hover:text-blue-500">
+                      <BsFillShareFill />
+                      <span className="ml-2">Share</span>
+                    </button>
+                  </div>
+                </div>
+              </div> */}
+
+              <div className="lg:col-span-1">
+                <div className="bg-gray-100 p-6 rounded-lg sticky top-8">
+                  <h3 className="text-xl font-semibold mb-4">Book Your Stay</h3>
+                  <div className="mb-4">
+                    <label className="block mb-2">Check-in</label>
+                    <input
+                      type="date"
+                      value={checkIn}
+                      onChange={(e) => setCheckIn(e.target.value)}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Check-out</label>
+                    <input
+                      type="date"
+                      value={checkOut}
+                      onChange={(e) => setCheckOut(e.target.value)}
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Adults</label>
+                    <input
+                      type="number"
+                      value={adult}
+                      onChange={(e) => setAdult(Number(e.target.value))}
+                      min="1"
+                      max={
+                        selectedRoomType
+                          ? selectedRoomType?.room_rates_info
+                              .max_adult_occupancy
+                          : 1
+                      }
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Children</label>
+                    <input
+                      type="number"
+                      value={children}
+                      onChange={(e) => setChildren(Number(e.target.value))}
+                      min="0"
+                      max={
+                        selectedRoomType
+                          ? selectedRoomType?.room_rates_info
+                              .max_child_occupancy
+                          : 1
+                      }
+                      className="w-full p-2 border rounded"
+                    />
+                  </div>
+                  <div className="text-2xl font-bold mb-4">
+                    {selectedRoomType
+                      ? `₹${selectedRoomType?.room_rates_info.totalprice_inclusive_all} / night`
+                      : "Please select a room"}
+                  </div>
+                  <button
+                    color="danger"
+                    onClick={selectedRoomType ? handleBookNow : undefined}
+                    className= {`px-4 py-2 text-white rounded-lg font-semibold ${selectedRoomType ? "bg-blue-500" : "bg-gray-500"}`}
+                  >
+                    Book Now
+                  </button>
                   <div className="flex justify-between items-center mt-4">
                     <button
                       onClick={wishListHandle}
